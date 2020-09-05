@@ -2,9 +2,12 @@ pipeline{
   agent any
   environment{
       PATH = "/usr/share/maven/bin:$PATH"
-      PATH = "/usr/share/java/bin:$PATH"
-
+  } 
+  tools {
+      jdk 'java8'
   }
+  
+  
   stages{
       stage('checking'){
           steps{
