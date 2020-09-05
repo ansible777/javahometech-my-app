@@ -1,10 +1,23 @@
-node{
-   stage('SCM Checkout'){
-     git 'https://github.com/javahometech/my-app'
-   }
-   stage('Compile-Package'){
-      // Get maven home path
-      def mvnHome =  tool name: 'maven-3', type: 'maven'   
-      sh "${mvnHome}/bin/mvn package"
-   }
+pipeline{
+  agent any
+  environment{
+      PATH = "/usr/share/maven/bin:$PATH"
+  }
+  stages{
+      stage('checking'){
+          steps{
+            sh "mvn clean package"
+
+          }
+      }
+      stage('build') {
+          steps{
+            withSonarQubeEnv('sonarqube') {
+                sh "mvn sonar:sonar"
+            }
+
+          }
+      }
+  }
+
 }
